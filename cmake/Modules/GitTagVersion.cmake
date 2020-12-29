@@ -65,7 +65,8 @@ elseif( EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git )
 
 	# -- extract pure numerical (including dots) version info
 	execute_process(
-			COMMAND /bin/bash -c "git describe --tags --abbrev=0 | tr --delete --complement '0-9.'"
+#			COMMAND /bin/bash -c "git describe --tags --abbrev=0 | tr --delete --complement '0-9.'" # Linux only
+			COMMAND git describe --tags --abbrev=0
 			WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 			OUTPUT_VARIABLE ${CMAKE_PROJECT_NAME}_VERSION_SHORT
 			ERROR_QUIET
