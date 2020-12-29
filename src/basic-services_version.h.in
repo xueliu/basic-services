@@ -1,0 +1,2 @@
+#define BASIC-SERVICES_VERSION_SHORT @basic-services_VERSION_SHORT@
+#define BASIC-SERVICES_VERSION @basic-services_VERSION@

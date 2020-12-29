@@ -7,6 +7,10 @@ project (basic-services)
 # -- Various includes
 include (GenerateExportHeader)
 include (CMakePackageConfigHelpers)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
+
+# -- Versioning with git tag
+include (GitTagVersion)
 
 # -- Set cxx 14 standard default
 set(CMAKE_CXX_STANDARD 14)
@@ -36,7 +40,7 @@ endif()
 include(./extern/asio.cmake)
 
 # Libraries
-
+include(./src/CMakeLists.txt)
 
 # Unit-Tests
 if(BASIC_SERVICES_TESTS)
