@@ -174,7 +174,7 @@ public:
 
 class BASIC_SERVICES_NO_EXPORT TimerManager::Impl {
 private:
-	std::list<Timer::Impl> m_timerList; //! List of associated timer instances
+	std::list<Timer::Impl> m_timerList; //!< list of associated timer instances
 	std::mutex m_lock;					//!< access lock
 	std::condition_variable m_sync;		//!< thread synchronisation
 	bool m_termination = false;			//!< flag: thread to be terminated
