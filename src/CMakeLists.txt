@@ -13,6 +13,7 @@ target_sources(
 	${LIB_NAME}
 	PRIVATE
 	${CMAKE_CURRENT_LIST_DIR}/timer.cpp
+	${CMAKE_CURRENT_LIST_DIR}/serial-device.cpp
 )
 
 target_include_directories(
