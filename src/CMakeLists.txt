@@ -5,8 +5,10 @@ generate_export_header(${LIB_NAME})
 
 set(
 	${LIB_NAME}_PUBLIC_HEADERS
-	${CMAKE_CURRENT_LIST_DIR}/../include/version.h
-	${CMAKE_CURRENT_LIST_DIR}/../include/timer.h
+	${CMAKE_SOURCE_DIR}/include/version.h
+	${CMAKE_SOURCE_DIR}/include/timer.h
+	${CMAKE_SOURCE_DIR}/include/thread.h
+	${CMAKE_SOURCE_DIR}/include/thread-pool.h
 )
 
 target_sources(
@@ -14,6 +16,8 @@ target_sources(
 	PRIVATE
 	${CMAKE_CURRENT_LIST_DIR}/timer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/serial-device.cpp
+	${CMAKE_CURRENT_LIST_DIR}/thread.cpp
+	${CMAKE_CURRENT_LIST_DIR}/thread-pool.cpp
 )
 
 target_include_directories(
