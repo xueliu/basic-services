@@ -33,7 +33,4 @@
 
 # CLion
 .idea/
-cmake-build-debug/
-cmake-build-release/
-cmake-build-debug-remote/
-cmake-build-release-remote/
+cmake-build-*/
