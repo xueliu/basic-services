@@ -148,7 +148,7 @@ public:
 	value_type Pop() {
 		std::unique_lock<std::mutex> lk(m_mutex);
 		while (m_queue.empty()) {
-			m_condPop.wait(lk);
+			m_condPush.wait(lk);
 		}
 
 		T value = std::move(m_queue.front());
