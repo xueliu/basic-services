@@ -7,6 +7,7 @@ project (basic-services)
 # -- Various includes
 include (GenerateExportHeader)
 include (CMakePackageConfigHelpers)
+include (GNUInstallDirs)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 
 # -- Versioning with git tag
@@ -16,6 +17,13 @@ include (GitTagVersion)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# when building, don't use the install RPATH already
+# (but later on when installing)
+SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+if (NOT (${CMAKE_INSTALL_PREFIX} STREQUAL "/usr" ) )
+    SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+endif()
+
 if(WIN32)
     set(BASIC_SERVICES_STATIC_LIBS_BY_DEFAULT ON)
 else()
@@ -24,7 +32,7 @@ endif()
 
 # Compilation options
 option(BASIC_SERVICES_STATIC_LIBS   "Build static libraries" ${BASIC_SERVICES_STATIC_LIBS_BY_DEFAULT})
-option(BASIC_SERVICES_TESTS         "Build unit tests" ON)
+option(BASIC_SERVICES_TESTS         "Build unit tests" OFF)
 option(BASIC_SERVICES_EXAMPLES      "Build example applications" OFF)
 
 if(BASIC_SERVICES_STATIC_LIBS)
@@ -37,10 +45,10 @@ else()
 endif()
 
 # External dependencies
-include(./extern/asio.cmake)
+include(extern/asio.cmake)
 
 # Libraries
-include(./src/CMakeLists.txt)
+include(src/CMakeLists.txt)
 
 # Unit-Tests
 if(BASIC_SERVICES_TESTS)
@@ -51,5 +59,5 @@ endif()
 
 # Examples
 if(BASIC_SERVICES_EXAMPLES)
-
+    add_subdirectory(examples)
 endif()
