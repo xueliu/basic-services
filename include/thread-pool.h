@@ -30,7 +30,7 @@ public:
 	~ThreadPool();
 
 	//! Start thread pool
-	void Start();
+	void Start(unsigned int num_thread);
 
 	//! Stop thread pool
 	void Stop();
@@ -38,8 +38,8 @@ public:
 	//! Retrieve name of the thread pool
 	const std::string& Name() const;
 
-	//! Post task into the thread pool
-	void Post(Task task);
+	//! Push task into the thread pool
+	void Run(Task task);
 private:
 
 	//! Thread function
@@ -49,8 +49,8 @@ private:
 	Task take();
 
 	mutable std::mutex m_mutex;
-	std::condition_variable m_notEmpty;
-	std::condition_variable m_notFull;
+	std::condition_variable m_condPush;
+	std::condition_variable m_condPop;
 
 	std::string m_name;
 
@@ -60,7 +60,6 @@ private:
 	bool m_isRunning;
 
 	uint16_t m_capacity;
-	uint16_t m_threadNum;
 };
 
 } // namespace basic
