@@ -8,10 +8,11 @@
 #include <chrono>
 
 #include "types.h"
+#include "basic-services_export.h"
 
 namespace basic {
 
-class Timestamp {
+class BASIC_SERVICES_EXPORT Timestamp {
 
 public:
 
