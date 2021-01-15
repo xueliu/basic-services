@@ -18,6 +18,7 @@ target_sources(
 	${CMAKE_CURRENT_LIST_DIR}/serial-device.cpp
 	${CMAKE_CURRENT_LIST_DIR}/thread.cpp
 	${CMAKE_CURRENT_LIST_DIR}/thread-pool.cpp
+	${CMAKE_CURRENT_LIST_DIR}/timestamp.cpp
 )
 
 target_include_directories(
