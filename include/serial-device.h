@@ -21,7 +21,7 @@ class BASIC_SERVICES_EXPORT SerialDevice {
 public:
 	//! Flow control type
 	enum class FlowControl : uint8_t {
-		kNone,		//!< no flow control
+		kNone,        //!< no flow control
 		kRtsCts,    //!<
 		kXonXoff    //!<
 	};
@@ -46,40 +46,35 @@ public:
 
 	//! Serial configuration
 	struct Configuration {
-		uint32_t baudrate;			//!< baud rate in bits/second
-		uint8_t data_bits;			//!< number of data bits
-		Parity parity;				//!< parity type
-		uint8_t stop_bits;			//!< number of stop bits
-		FlowControl flow_control;	//!< flow control type
-		bool gap_sync;				//!< flag: operating in gap sync mode
-		unsigned int timeout;		//!< byte timeout in milliseconds
+		uint32_t baudrate;            //!< baud rate in bits/second
+		uint8_t data_bits;            //!< number of data bits
+		Parity parity;                //!< parity type
+		uint8_t stop_bits;            //!< number of stop bits
+		FlowControl flow_control;    //!< flow control type
+		bool gap_sync;                //!< flag: operating in gap sync mode
+		unsigned int timeout;        //!< byte timeout in milliseconds
 
 		constexpr explicit Configuration(uint32_t baud, uint8_t data = 8, Parity par = Parity::kNone, uint8_t stop = 1,
 		                                 FlowControl flow_control = FlowControl::kNone, unsigned int time = 0,
 		                                 bool sync = false)
-				: baudrate(baud)
-				, data_bits(data)
-				, parity(par)
-				, stop_bits(stop)
-				, flow_control(flow_control)
-				, gap_sync(sync)
-				, timeout(time) {}
+				: baudrate(baud), data_bits(data), parity(par), stop_bits(stop), flow_control(flow_control),
+				  gap_sync(sync), timeout(time) {}
 	};
 
 	//! Constructor
 	//!
 	//! \param name - Name of the serial device
 	//! \param config - Configuration of the serial device
-	SerialDevice(char const * name, Configuration const & config);
+	SerialDevice(char const *name, Configuration const &config);
 
 	//! Destructor
 	~SerialDevice();
 
 	//! Move constructor
-	SerialDevice(SerialDevice&&) = default;
+	SerialDevice(SerialDevice &&) = default;
 
 	//! Move assigment
-	SerialDevice& operator=(SerialDevice&&) = default;
+	SerialDevice &operator=(SerialDevice &&) = default;
 
 	//! Check validity of the instance
 	//!
@@ -95,18 +90,18 @@ public:
 	//! \param data - Pointer to data buffer
 	//! \param size - Size of the data buffer
 	//! \return Number of read data bytes
-	size_t ReadSome(uint8_t * data, size_t size);
+	size_t ReadSome(uint8_t *data, size_t size);
 
-    //! Write some data to the serial device
-    //!
-    //! \param data - Pointer of data to write
-    //! \param size - Number of data to write
-    //! \return Number of written data bytes
-	size_t WriteSome(uint8_t const* data, size_t size);
+	//! Write some data to the serial device
+	//!
+	//! \param data - Pointer of data to write
+	//! \param size - Number of data to write
+	//! \return Number of written data bytes
+	size_t WriteSome(uint8_t const *data, size_t size);
 
-    //! Retrieve the status of the modem lines
-    //!
-    //! \return Modem line status
+	//! Retrieve the status of the modem lines
+	//!
+	//! \return Modem line status
 	ModemLine GetLine() const;
 
 
@@ -116,23 +111,59 @@ public:
 	//! \param value - Value of modem lines to update
 	//! \return Previous status of modem lines
 	ModemLine SetLine(ModemLine mask, ModemLine value);
+
 public:
 	class Impl;
+
 private:
 	std::unique_ptr<Impl> m_impl;
 };
 
 //! Combining ModemLine status
-static inline SerialDevice::ModemLine operator| (SerialDevice::ModemLine a, SerialDevice::ModemLine b)
-{
-	return SerialDevice::ModemLine(uint8_t(a)|uint8_t(b));
+static inline SerialDevice::ModemLine operator|(SerialDevice::ModemLine a, SerialDevice::ModemLine b) {
+	return SerialDevice::ModemLine(uint8_t(a) | uint8_t(b));
 }
 
 //! Checking ModemLine status
-static inline bool operator& (SerialDevice::ModemLine a, SerialDevice::ModemLine b)
-{
+static inline bool operator&(SerialDevice::ModemLine a, SerialDevice::ModemLine b) {
 	return 0 != (uint8_t(a) & uint8_t(b));
 }
+
+//! Class Serial Buffer Device
+class BASIC_SERVICES_EXPORT SerialBufferDevice {
+public:
+	using ModemLine = SerialDevice::ModemLine;
+
+
+	SerialBufferDevice(char const *, SerialDevice::Configuration const &, size_t);
+
+	//! Destructor
+	~SerialBufferDevice();
+
+	SerialBufferDevice(SerialBufferDevice &&) = default;
+
+	SerialBufferDevice &operator=(SerialBufferDevice &&) = default;
+
+	explicit operator bool() const noexcept { return !!m_impl; }
+
+	void Close();
+
+	size_t Read(uint8_t const *&);
+
+	void Remove(size_t) noexcept;
+
+	size_t Write(uint8_t const *, size_t);
+
+	ModemLine GetLine() const;
+
+	ModemLine SetLine(ModemLine mask, ModemLine value);
+
+public:
+	class Impl;
+
+private:
+	std::unique_ptr<Impl> m_impl;
+};
 
 } // namespace basic
 

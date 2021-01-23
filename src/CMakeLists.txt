@@ -16,6 +16,7 @@ target_sources(
 	PRIVATE
 	${CMAKE_CURRENT_LIST_DIR}/timer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/serial-device.cpp
+	${CMAKE_CURRENT_LIST_DIR}/serial-buffer-device.cpp
 	${CMAKE_CURRENT_LIST_DIR}/thread.cpp
 	${CMAKE_CURRENT_LIST_DIR}/thread-pool.cpp
 	${CMAKE_CURRENT_LIST_DIR}/timestamp.cpp
