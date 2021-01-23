@@ -21,6 +21,21 @@ target_sources(
 	${CMAKE_CURRENT_LIST_DIR}/timestamp.cpp
 )
 
+
+if(WIN32)
+	target_sources(
+		${LIB_NAME}
+		PRIVATE
+		${CMAKE_CURRENT_LIST_DIR}/serial-device-wins.cpp
+	)
+elseif(UNIX)
+	target_sources(
+		${LIB_NAME}
+		PRIVATE
+		${CMAKE_CURRENT_LIST_DIR}/serial-device-unix.cpp
+	)
+endif()
+
 target_include_directories(
 	${LIB_NAME}
 	PRIVATE
@@ -28,6 +43,20 @@ target_include_directories(
 	$<INSTALL_INTERFACE:include>
 	${CMAKE_CURRENT_BINARY_DIR}
 )
+
+if(WIN32)
+	target_include_directories(
+		${LIB_NAME}
+		PRIVATE
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/impl/wins>
+	)
+elseif(UNIX)
+	target_include_directories(
+		${LIB_NAME}
+		PRIVATE
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/impl/unix>
+	)
+endif()
 
 target_link_libraries(
 	${LIB_NAME}

@@ -5,6 +5,13 @@
 #ifndef BASIC_SERVICES_SERIAL_DEVICE_H
 #define BASIC_SERVICES_SERIAL_DEVICE_H
 
+#include <cstdint>
+#include <memory>
+#include <functional>
+#include <initializer_list>
+#include <cstring>
+
+
 #include "basic-services_export.h"
 
 namespace basic {
