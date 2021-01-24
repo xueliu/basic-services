@@ -6,6 +6,7 @@
 #define BASIC_SERVICES_TIMESTAMP_H
 
 #include <chrono>
+#include <string>
 
 #include "types.h"
 #include "basic-services_export.h"
@@ -24,7 +25,13 @@ public:
 		std::swap(m_microSeconds, rhs.m_microSeconds);
 	}
 
+	std::string toString() const;
+
+	std::string toFormattedString(bool show_microseconds = true) const noexcept;
+
 	static Timestamp Now();
+
+	static const int kMicroSecondsPerSecond = 1000 * 1000;
 
 private:
 	std::chrono::microseconds m_microSeconds; //!< Micro seconds since Epoch
