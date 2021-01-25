@@ -17,24 +17,33 @@ class BASIC_SERVICES_EXPORT Timestamp {
 
 public:
 
-	Timestamp() : m_microSeconds{} {}
-	explicit Timestamp(std::chrono::microseconds value) : m_microSeconds(value) {}
+	Timestamp() : m_timePoint() {}
+
+	explicit Timestamp(std::chrono::system_clock::time_point value);
 
 	void Swap(Timestamp& rhs)
 	{
-		std::swap(m_microSeconds, rhs.m_microSeconds);
+		std::swap(m_timePoint, rhs.m_timePoint);
+	}
+
+	bool isValid() const {
+		return m_timePoint > std::chrono::system_clock::time_point();
 	}
 
 	std::string toString() const;
 
-	std::string toFormattedString(bool show_microseconds = true) const noexcept;
+	std::string toFormattedString(bool show_milliseconds = true) const noexcept;
 
 	static Timestamp Now();
 
-	static const int kMicroSecondsPerSecond = 1000 * 1000;
+	static const int kMilliSecondsPerSecond = 1000;
 
 private:
-	std::chrono::microseconds m_microSeconds; //!< Micro seconds since Epoch
+	constexpr std::chrono::milliseconds::rep milliseconds() const noexcept {
+		return std::chrono::duration_cast<std::chrono::milliseconds>(m_timePoint.time_since_epoch()).count();
+	}
+
+	std::chrono::system_clock::time_point m_timePoint;
 };
 
 } // namespace basic
