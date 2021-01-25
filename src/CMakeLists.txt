@@ -62,7 +62,7 @@ endif()
 target_link_libraries(
 	${LIB_NAME}
 	PUBLIC
-	# TODO:
+	Threads::Threads
 )
 
 configure_file(${CMAKE_CURRENT_LIST_DIR}/${LIB_NAME}_version.h.in "${CMAKE_CURRENT_BINARY_DIR}/${LIB_NAME}_version.h" @ONLY)

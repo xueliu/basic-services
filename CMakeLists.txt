@@ -35,6 +35,10 @@ option(BASIC_SERVICES_STATIC_LIBS   "Build static libraries" ${BASIC_SERVICES_ST
 option(BASIC_SERVICES_TESTS         "Build unit tests" OFF)
 option(BASIC_SERVICES_EXAMPLES      "Build example applications" OFF)
 
+set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+find_package(Threads REQUIRED)
+
 if(BASIC_SERVICES_STATIC_LIBS)
     set(BUILD_SHARED_LIBS OFF)
 else()
