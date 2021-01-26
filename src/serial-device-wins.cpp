@@ -28,11 +28,11 @@ void SerialDevice::Impl::Close() {
 }
 
 SerialDevice::ModemLine SerialDevice::Impl::GetLine() const {
-
+	return SerialDevice::ModemLine();
 }
 
 SerialDevice::ModemLine SerialDevice::Impl::SetLine(ModemLine mask, ModemLine value) {
-
+	return SerialDevice::ModemLine();
 }
 
 
