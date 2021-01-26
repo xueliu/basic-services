@@ -18,13 +18,13 @@ int main() {
 //	thread.Start();
 //	thread.Join();
 
-	basic::ThreadPool thread_pool {"MyThreadPool", 4, 4};
-	thread_pool.Start();
+	basic::ThreadPool thread_pool {"MyThreadPool", 4};
+	thread_pool.Start(4);
 
-	thread_pool.Post( [](){ std::cout << "Hello 3" << std::endl; } );
-	thread_pool.Post( [](){ std::cout << "Hello 4" << std::endl; } );
-	thread_pool.Post( [](){ std::cout << "Hello 1" << std::endl; } );
-	thread_pool.Post( [](){ std::cout << "Hello 2" << std::endl; } );
+	thread_pool.Run( [](){ std::cout << "Hello 3" << std::endl; } );
+	thread_pool.Run( [](){ std::cout << "Hello 4" << std::endl; } );
+	thread_pool.Run( [](){ std::cout << "Hello 1" << std::endl; } );
+	thread_pool.Run( [](){ std::cout << "Hello 2" << std::endl; } );
 
 	while(loop < 4)
 	{

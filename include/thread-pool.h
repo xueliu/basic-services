@@ -24,7 +24,7 @@ public:
 	using Task = basic::Thread::Function;
 
 	//! Constructor
-	explicit ThreadPool(std::string, uint16_t, uint16_t);
+	explicit ThreadPool(std::string, uint16_t);
 
 	//! Destructor
 	~ThreadPool();
