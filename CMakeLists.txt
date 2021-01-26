@@ -14,7 +14,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Mo
 include (GitTagVersion)
 
 # -- Set cxx 14 standard default
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # when building, don't use the install RPATH already
@@ -37,7 +37,6 @@ option(BASIC_SERVICES_EXAMPLES      "Build example applications" OFF)
 
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
-find_package(Threads REQUIRED)
 
 if(BASIC_SERVICES_STATIC_LIBS)
     set(BUILD_SHARED_LIBS OFF)

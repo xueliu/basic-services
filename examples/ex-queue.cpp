@@ -4,7 +4,7 @@
 
 #include "queue.h"
 
-auto mains() -> int
+auto main() -> int
 {
 	basic::Queue<int> queue(4);
 
