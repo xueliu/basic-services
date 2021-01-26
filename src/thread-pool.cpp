@@ -7,8 +7,7 @@
 
 namespace basic {
 
-ThreadPool::ThreadPool(std::string name, uint16_t capacity,
-                       uint16_t thread_num = std::thread::hardware_concurrency())
+ThreadPool::ThreadPool(std::string name, uint16_t capacity)
 		: m_name(std::move(name)), m_capacity(capacity), m_isRunning(false) {
 
 }
@@ -22,7 +21,7 @@ void ThreadPool::Start(unsigned int num_thread = std::thread::hardware_concurren
 	assert(m_threads.empty());
 	m_isRunning = true;
 	m_threads.reserve(num_thread);
-	for (int i = 0; i < num_thread; ++i) {
+	for (unsigned int i = 0; i < num_thread; ++i) {
 		m_threads.emplace_back(new basic::Thread([this] { runInThread(); }));
 		m_threads[i]->Start();
 	}
@@ -61,7 +60,7 @@ ThreadPool::Task ThreadPool::take() {
 	}
 
 	Task task;
-	if (not m_tasks.empty()) {
+	if (! m_tasks.empty()) {
 		task = m_tasks.front();
 		m_tasks.pop_front();
 		if (m_capacity > 0) {

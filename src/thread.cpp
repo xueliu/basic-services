@@ -28,7 +28,7 @@ Thread &Thread::operator=(Thread &&rhs) noexcept {
 }
 
 Thread::~Thread() {
-	if (m_isStarted && not m_isJoined) {
+	if (m_isStarted && ! m_isJoined) {
 		m_thread.detach(); // no wait
 	}
 }
