@@ -38,10 +38,14 @@ public:
 
 	static const int kMilliSecondsPerSecond = 1000;
 
-private:
-	constexpr std::chrono::milliseconds::rep milliseconds() const noexcept {
+	std::chrono::milliseconds::rep milliseconds() const noexcept {
 		return std::chrono::duration_cast<std::chrono::milliseconds>(m_timePoint.time_since_epoch()).count();
 	}
+
+	std::chrono::system_clock::time_point getTimepoint() const {
+		return m_timePoint;
+	}
+private:
 
 	std::chrono::system_clock::time_point m_timePoint;
 };
