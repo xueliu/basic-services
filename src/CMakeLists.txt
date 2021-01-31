@@ -14,6 +14,9 @@ set(
 target_sources(
 	${LIB_NAME}
 	PRIVATE
+	${CMAKE_CURRENT_LIST_DIR}/current-thread.cpp
+	${CMAKE_CURRENT_LIST_DIR}/logging.cpp
+	${CMAKE_CURRENT_LIST_DIR}/log-stream.cpp
 	${CMAKE_CURRENT_LIST_DIR}/timer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/serial-device.cpp
 	${CMAKE_CURRENT_LIST_DIR}/serial-buffer-device.cpp
