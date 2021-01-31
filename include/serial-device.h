@@ -233,6 +233,20 @@ public:
 
 	//!
 	size_t Write(uint8_t const*, size_t);
+
+	using ModemLine = SerialDevice::ModemLine;
+
+	//! Retrieve the status of the modem lines
+	ModemLine GetLine() const;
+
+	//! Set the status of the modem lines
+	ModemLine SetLine(ModemLine mask, ModemLine value);
+
+public:
+	class Impl;
+
+private:
+	std::unique_ptr<Impl> m_impl;
 };
 
 } // namespace basic
