@@ -9,6 +9,12 @@
 
 #include <string.h>
 
+namespace basic {
+
+
+//! Class SourceFile
+//!
+//! \note Copy from muduo
 class SourceFile
 {
 public:
@@ -39,5 +45,7 @@ public:
 	const char* data_;
 	int size_;
 };
+
+} // namespace basic
 
 #endif //BASIC_SERVICES_SOURCE_FILE_H
