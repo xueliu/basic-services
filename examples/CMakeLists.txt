@@ -1,4 +1,4 @@
-foreach(EXAMPLE ex-thread-pool ex-queue ex-timestamp ex-source-file)
+foreach(EXAMPLE ex-thread-pool ex-queue ex-timestamp ex-source-file ex-log)
 
 	add_executable(${EXAMPLE} "")
 
