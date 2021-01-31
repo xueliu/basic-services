@@ -130,32 +130,45 @@ static inline bool operator&(SerialDevice::ModemLine a, SerialDevice::ModemLine 
 }
 
 //! Class Serial Buffer Device
+//!
+//! \brief SerialBufferDevice implements a buffered serial device.
+//! The buffer in the receive direction allows handling of received data chunks in a off-line way.
+//!
 class BASIC_SERVICES_EXPORT SerialBufferDevice {
 public:
 	using ModemLine = SerialDevice::ModemLine;
 
-
+	//! Constructor
 	SerialBufferDevice(char const *, SerialDevice::Configuration const &, size_t);
 
 	//! Destructor
 	~SerialBufferDevice();
 
+	//! Move constructor
 	SerialBufferDevice(SerialBufferDevice &&) = default;
 
+	//! Move assignment
 	SerialBufferDevice &operator=(SerialBufferDevice &&) = default;
 
+	//! Instance validity check
 	explicit operator bool() const noexcept { return !!m_impl; }
 
+	//! Close the device
 	void Close();
 
+	//! Data retrieval from the device
 	size_t Read(uint8_t const *&);
 
+	//! Data remove (acknowledging) a data chunk
 	void Remove(size_t) noexcept;
 
+	//! Write data to the device
 	size_t Write(uint8_t const *, size_t);
 
+	//! Retrieve the status of the modem lines
 	ModemLine GetLine() const;
 
+	//! Set the status of the modem lines
 	ModemLine SetLine(ModemLine mask, ModemLine value);
 
 public:
@@ -163,6 +176,63 @@ public:
 
 private:
 	std::unique_ptr<Impl> m_impl;
+};
+
+//! Class SerialPacketDevice
+//!
+//! \brief SerialPacketDevice implements a packet based serial device.
+//! Data packets are assembled from a serial data stream and passed on as
+//! complete packets for processing.
+class BASIC_SERVICES_EXPORT SerialPacketDevice {
+public:
+	//! Class for packet delimiter
+	struct Delimiter {
+
+		using size_type = uint8_t;					//!< Size type
+		static constexpr size_type kMaxSize = 3;    //!< Maximum delimiter size
+		size_type const size;						//!< Delimiter size
+		uint8_t data[kMaxSize];                     //!< Delimiter data
+
+		static constexpr size_type set_size(size_t sz) {
+			return (sz <= kMaxSize) ? size_type(sz) : kMaxSize;
+		}
+
+		//! Default constructor
+		Delimiter() : size(0), data{0} {}
+
+		//! Constructor of arbitrary binary delimiter
+		Delimiter(std::initializer_list<uint8_t> const &arr)
+			: size(set_size(arr.size())), data{} {
+			std::memcpy(data, arr.begin(), size);
+		}
+
+		//! Constructor from string
+		explicit Delimiter(char const *str)
+			: size(set_size(strlen(str))), data{} {
+			std::memcpy(data, str, size);
+		}
+	}; // struct Delimiter
+
+	//! Constructor
+	SerialPacketDevice(char const*, SerialDevice::Configuration const&, size_t,
+	                   size_t, std::function<void(uint8_t const*, size_t)>&&,
+	                   std::initializer_list<Delimiter> const&,
+	                   Delimiter const&);
+
+	//! Destructor
+	~SerialPacketDevice();
+
+	//! Move constructor
+	SerialPacketDevice(SerialPacketDevice&&) = default;
+
+	//! Move assignment
+	SerialPacketDevice& operator=(SerialPacketDevice&&) = default;
+
+	//! Instance validity check
+	explicit operator bool() const noexcept { return !!m_impl; }
+
+	//!
+	size_t Write(uint8_t const*, size_t);
 };
 
 } // namespace basic
