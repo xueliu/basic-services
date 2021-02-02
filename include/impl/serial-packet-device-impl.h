@@ -18,18 +18,18 @@ namespace basic {
 class BASIC_SERVICES_NO_EXPORT SerialPacketDevice::Impl : public SerialBufferDevice::Impl {
 private:
 
-	std::function<void(uint8_t const *, size_t)> const rx_handler_;
+	SerialPacketDevice::RxHandler const m_rxHandler;
 
-	std::vector<Delimiter> const rx_delimiters_;
+	std::vector<Delimiter> const m_rxDelimiters;
 
-	Delimiter const tx_delimiter_;
+	Delimiter const m_txDelimiter;
 
-	typename Delimiter::size_type max_delimiter_size_;
+	typename Delimiter::size_type MAX_DELIMITER_SIZE;
 
-	size_t max_packet_size_;
-	std::unique_ptr<uint8_t[]> packet_;
+	size_t m_maxPacketSize;
+	std::unique_ptr<uint8_t[]> m_packet;
 
-	std::thread packetizer_;
+	std::thread m_packetizer;
 
 	void Packetizer();
 
@@ -46,7 +46,7 @@ private:
 public:
 
 	Impl(char const *name, SerialDevice::Configuration const &config, size_t size,
-	     size_t packet_size, std::function<void(uint8_t const *, size_t)> &&handler,
+	     size_t packet_size, SerialPacketDevice::RxHandler && handler,
 	     std::initializer_list<Delimiter> const &rx_delim,
 	     Delimiter const &tx_delim)
 			: SerialBufferDevice::Impl(name,SerialDevice::Configuration(
@@ -56,25 +56,25 @@ public:
 					                           config.stop_bits,
 					                           config.flow_control,
 					                           config.timeout,
-					                           true), size), rx_handler_(std::move(handler)), rx_delimiters_(rx_delim),
-			  tx_delimiter_(tx_delim), max_delimiter_size_(MaxDelimiterSize(rx_delim)), max_packet_size_(packet_size),
-			  packet_(std::make_unique<uint8_t[]>(max_packet_size_ + max_delimiter_size_)),
-			  packetizer_(&Impl::Packetizer, this) {}
+					                           true), size), m_rxHandler(std::move(handler)), m_rxDelimiters(rx_delim),
+			  m_txDelimiter(tx_delim), MAX_DELIMITER_SIZE(MaxDelimiterSize(rx_delim)), m_maxPacketSize(packet_size),
+			  m_packet(std::make_unique<uint8_t[]>(m_maxPacketSize + MAX_DELIMITER_SIZE)),
+			  m_packetizer(&Impl::Packetizer, this) {}
 
 /** Destructor */
 	~Impl() {
-		max_delimiter_size_ = 0;
+		MAX_DELIMITER_SIZE = 0;
 		Close();
-		packetizer_.join();
+		m_packetizer.join();
 	}
 
 /** Check for valid instance */
 	bool IsValid() const noexcept {
 		return SerialBufferDevice::Impl::IsValid()
-		       && rx_handler_
-		       && max_delimiter_size_
-		       && max_packet_size_
-		       && packet_;
+		       && m_rxHandler
+		       && MAX_DELIMITER_SIZE
+		       && m_maxPacketSize
+		       && m_packet;
 	}
 
 	size_t WriteSome(uint8_t const *, size_t);

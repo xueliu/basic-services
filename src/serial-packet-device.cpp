@@ -14,7 +14,7 @@ namespace basic {
 int SerialPacketDevice::Impl::FindDelimiter(uint8_t const *dp, size_t len, bool best_match) {
 	int match = 0;
 	if (len)
-		for (Delimiter const &del : rx_delimiters_) {
+		for (Delimiter const &del : m_rxDelimiters) {
 			if (len < del.size) {
 				if (0 == std::memcmp(del.data, dp, len)) {
 					match = int(-len);
@@ -35,8 +35,8 @@ int SerialPacketDevice::Impl::FindDelimiter(uint8_t const *dp, size_t len, bool 
 
 size_t SerialPacketDevice::Impl::WriteSome(uint8_t const *data, size_t size) {
 	size_t sz = SerialBufferDevice::Impl::WriteSome(data, size);
-	if ((sz >= size) && tx_delimiter_.size)
-		sz += SerialBufferDevice::Impl::WriteSome(tx_delimiter_.data, tx_delimiter_.size);
+	if ((sz >= size) && m_txDelimiter.size)
+		sz += SerialBufferDevice::Impl::WriteSome(m_txDelimiter.data, m_txDelimiter.size);
 	return sz;
 }
 
@@ -47,14 +47,14 @@ void SerialPacketDevice::Impl::Packetizer() {
 		size_t packet_len = 0;
 		size_t packet_end = 0;
 
-		while (max_delimiter_size_) {
+		while (MAX_DELIMITER_SIZE) {
 
 			uint8_t const *data;
 			size_t const size = SerialBufferDevice::Impl::ReadSome(data);
 			if (0 == size) {
-				if (FindDelimiter(&packet_[packet_len], packet_end - packet_len, true) > 0) {
+				if (FindDelimiter(&m_packet[packet_len], packet_end - packet_len, true) > 0) {
 					if (!discard) {
-						rx_handler_(&packet_[0], packet_len);
+						m_rxHandler(&m_packet[0], packet_len);
 					}
 
 					discard = false;
@@ -63,19 +63,19 @@ void SerialPacketDevice::Impl::Packetizer() {
 				}
 			} else {
 				for (size_t i = 0; i < size; ++i) {
-					packet_[packet_end++] = *data++;
+					m_packet[packet_end++] = *data++;
 
-					int const match = FindDelimiter(&packet_[packet_len], packet_end - packet_len);
+					int const match = FindDelimiter(&m_packet[packet_len], packet_end - packet_len);
 
 					if (match == 0) {
-						if (!discard && ((packet_len = packet_end) > max_packet_size_)) {
+						if (!discard && ((packet_len = packet_end) > m_maxPacketSize)) {
 							discard = true;
 							packet_len = 0;
 							packet_end = 0;
 						}
 					} else if (match > 0) {
 						if (!discard)
-							rx_handler_(&packet_[0], packet_len);
+							m_rxHandler(&m_packet[0], packet_len);
 
 						if ((packet_end - packet_len) > size_t(match)) {
 							--data;
