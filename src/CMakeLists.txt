@@ -20,6 +20,7 @@ target_sources(
 	${CMAKE_CURRENT_LIST_DIR}/timer.cpp
 	${CMAKE_CURRENT_LIST_DIR}/serial-device.cpp
 	${CMAKE_CURRENT_LIST_DIR}/serial-buffer-device.cpp
+	${CMAKE_CURRENT_LIST_DIR}/serial-packet-device.cpp
 	${CMAKE_CURRENT_LIST_DIR}/thread.cpp
 	${CMAKE_CURRENT_LIST_DIR}/thread-pool.cpp
 	${CMAKE_CURRENT_LIST_DIR}/timestamp.cpp
@@ -44,6 +45,7 @@ target_include_directories(
 	${LIB_NAME}
 	PRIVATE
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/impl>
 	$<INSTALL_INTERFACE:include>
 	${CMAKE_CURRENT_BINARY_DIR}
 )

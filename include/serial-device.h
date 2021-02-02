@@ -157,13 +157,13 @@ public:
 	void Close();
 
 	//! Data retrieval from the device
-	size_t Read(uint8_t const *&);
+	size_t ReadSome(uint8_t const *&);
 
 	//! Data remove (acknowledging) a data chunk
 	void Remove(size_t) noexcept;
 
 	//! Write data to the device
-	size_t Write(uint8_t const *, size_t);
+	size_t WriteSome(uint8_t const *, size_t);
 
 	//! Retrieve the status of the modem lines
 	ModemLine GetLine() const;
@@ -232,7 +232,7 @@ public:
 	explicit operator bool() const noexcept { return !!m_impl; }
 
 	//!
-	size_t Write(uint8_t const*, size_t);
+	size_t WriteSome(uint8_t const*, size_t);
 
 	using ModemLine = SerialDevice::ModemLine;
 
