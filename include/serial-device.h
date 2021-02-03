@@ -213,9 +213,11 @@ public:
 		}
 	}; // struct Delimiter
 
+	using RxHandler = std::function<void(uint8_t const *, size_t)>;
+
 	//! Constructor
 	SerialPacketDevice(char const*, SerialDevice::Configuration const&, size_t,
-	                   size_t, std::function<void(uint8_t const*, size_t)>&&,
+	                   size_t, RxHandler&&,
 	                   std::initializer_list<Delimiter> const&,
 	                   Delimiter const&);
 
