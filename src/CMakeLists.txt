@@ -14,6 +14,7 @@ set(
 target_sources(
 	${LIB_NAME}
 	PRIVATE
+	${CMAKE_CURRENT_LIST_DIR}/count-down-latch.cpp
 	${CMAKE_CURRENT_LIST_DIR}/current-thread.cpp
 	${CMAKE_CURRENT_LIST_DIR}/logging.cpp
 	${CMAKE_CURRENT_LIST_DIR}/log-stream.cpp
