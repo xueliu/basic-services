@@ -31,15 +31,15 @@ void CountDownLatch::countDown() {
 	}
 }
 
-void CountDownLatch::wait(uint64_t miliseconds) {
+void CountDownLatch::wait(uint64_t milliseconds) {
 	std::unique_lock<std::mutex> lk(m_mtx);
 
 	if (0 == m_count) {
 		return;
 	}
 
-	if (miliseconds > 0) {
-		m_cond.wait_for(lk, std::chrono::milliseconds(miliseconds), [this] { return m_count <= 0; } );
+	if (milliseconds > 0) {
+		m_cond.wait_for(lk, std::chrono::milliseconds(milliseconds), [this] { return m_count <= 0; } );
 	} else {
 		m_cond.wait(lk, [this] { return m_count <= 0; });
 	}

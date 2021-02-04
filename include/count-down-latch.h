@@ -31,7 +31,7 @@ public:
 	int getCount() const;
 
 	//! Wait for count to zero
-	void wait(uint64_t miliseconds = 0);
+	void wait(uint64_t milliseconds = 0);
 };
 
 } // namespace basic
