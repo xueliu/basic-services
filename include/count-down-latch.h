@@ -15,7 +15,7 @@
 namespace basic {
 
 // Class CountDownLatch
-class CountDownLatch : public noncopyable {
+class BASIC_SERVICES_EXPORT CountDownLatch : public noncopyable {
 private:
 	mutable std::mutex m_mtx;
 	std::condition_variable m_cond;
