@@ -5,10 +5,12 @@ generate_export_header(${LIB_NAME})
 
 set(
 	${LIB_NAME}_PUBLIC_HEADERS
-	${CMAKE_SOURCE_DIR}/include/version.h
-	${CMAKE_SOURCE_DIR}/include/timer.h
+	${CMAKE_SOURCE_DIR}/include/circle-buffer.h
+	${CMAKE_SOURCE_DIR}/include/count-down-latch.h
 	${CMAKE_SOURCE_DIR}/include/thread.h
 	${CMAKE_SOURCE_DIR}/include/thread-pool.h
+	${CMAKE_SOURCE_DIR}/include/timer.h
+	${CMAKE_SOURCE_DIR}/include/version.h
 )
 
 target_sources(
