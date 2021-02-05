@@ -7,6 +7,7 @@
 
 #include <condition_variable>
 #include <mutex>
+#include <atomic>
 
 #include "noncopyable.h"
 #include "basic-services_export.h"
@@ -18,7 +19,7 @@ class CountDownLatch : public noncopyable {
 private:
 	mutable std::mutex m_mtx;
 	std::condition_variable m_cond;
-	int m_count;
+	std::atomic_int32_t m_count;
 
 public:
 	//! Constructor

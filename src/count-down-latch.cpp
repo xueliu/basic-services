@@ -12,14 +12,10 @@ CountDownLatch::CountDownLatch(int count)
 }
 
 int CountDownLatch::getCount() const {
-	std::lock_guard<std::mutex> lk(m_mtx);
-
-	return m_count;
+	return m_count.load();
 }
 
 void CountDownLatch::countDown() {
-	std::lock_guard<std::mutex> lk(m_mtx);
-
 	if (0 == m_count) {
 		return;
 	}
@@ -32,12 +28,12 @@ void CountDownLatch::countDown() {
 }
 
 void CountDownLatch::wait(uint64_t milliseconds) {
-	std::unique_lock<std::mutex> lk(m_mtx);
 
 	if (0 == m_count) {
 		return;
 	}
 
+	std::unique_lock<std::mutex> lk(m_mtx);
 	if (milliseconds > 0) {
 		m_cond.wait_for(lk, std::chrono::milliseconds(milliseconds), [this] { return m_count <= 0; } );
 	} else {
