@@ -10,17 +10,45 @@
 namespace basic {
 
 
-//! Class Event
+using Signal = std::uint16_t;
+
+constexpr Signal NULL_SIG   {0};    //!< Signal for null
+constexpr Signal ENTRY_SIG  {1};	//!< Signal for entry actions
+constexpr Signal EXIT_SIG   {2};    //!< Signal for exit actions
+constexpr Signal INIT_SIG   {3};    //!< Signal for initial actions
+constexpr Signal USER_SIG   {4};    //!< Signal for staring user defined actions
+
 class BASIC_SERVICES_EXPORT Event {
 public:
-	//! Constructor
-	Event() = default;
+	explicit Event(Signal sig) noexcept
+			: signal(sig) {}
+	Signal signal;
 
-	//! Destructor
-	virtual ~Event() = default;
+	bool operator == (const Event & rhs) const
+	{
+		return this->signal == rhs.signal;
+	}
 
-protected:
-	virtual void Process() = 0;
+	bool operator != (const Event & rhs) const
+	{
+		return this->signal != rhs.signal;
+	}
+};
+
+//! typedef for non-const pointer type Event
+typedef Event * EventPtr;
+
+//! typedef for const type Event
+typedef const Event EventConst;
+
+//! typedef for const pointer type Event
+typedef const Event * EventConstPtr;
+
+EventConst reservedEvents[4] = {
+		Event(NULL_SIG),
+		Event(ENTRY_SIG),
+		Event(EXIT_SIG),
+		Event(INIT_SIG)
 };
 
 } // namespace basic

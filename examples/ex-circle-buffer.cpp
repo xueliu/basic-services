@@ -5,38 +5,12 @@
 #include <cassert>
 
 #include "circle-buffer.h"
+#include "event.h"
 
 using namespace basic;
 
 auto main() -> int
 {
-	using Signal = std::uint16_t;
-
-	class Event {
-	public:
-		explicit Event(Signal sig) noexcept
-				: signal(sig) {}
-		Signal signal;
-
-		bool operator == (const Event & rhs) const
-		{
-			return this->signal == rhs.signal;
-		}
-
-		bool operator != (const Event & rhs) const
-		{
-			return this->signal != rhs.signal;
-		}
-	};
-
-	//! typedef for non-const pointer type Event
-	typedef Event * EventPtr;
-
-	//! typedef for const type Event
-	typedef const Event EventConst;
-
-	//! typedef for const pointer type Event
-	typedef const Event * EventConstPtr;
 
 	Event event_1(16);
 
