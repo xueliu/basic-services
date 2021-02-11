@@ -23,12 +23,23 @@ cmake_minimum_required (VERSION 3.8.0)
 # This variable equals to ${CMAKE_PROJECT_NAME}_VERSION_FULL,
 # but offers an additional git branch information as
 # a simple suffixed "-<branchname>".
+#
+# ${CMAKE_PROJECT_NAME}_VERSION_MAJOR
+# This variable contains the major version.
+#
+# ${CMAKE_PROJECT_NAME}_VERSION_MINOR
+# This variable contains the minor version.
+#
+# ${CMAKE_PROJECT_NAME}_VERSION_PATCH
+# This variable contains the patch version.
 
 # -- module version (of this .cmake file)
-set(GIT_TAG_VERSION_MODULE_VERSION 1.1.0)
+set(GIT_TAG_VERSION_MODULE_VERSION 1.2.0)
 
 # -- Versioning with git tag
 message(STATUS "GitTagVersion: Version ${GIT_TAG_VERSION_MODULE_VERSION}")
+message(STATUS "Please using Semantic Versioning in Git Tag")
+
 if( DEFINED ${CMAKE_PROJECT_NAME}_VERSION_FULL AND DEFINED ${CMAKE_PROJECT_NAME}_VERSION_SHORT )
 	message(STATUS "Full version: ${${CMAKE_PROJECT_NAME}_VERSION_FULL}")
 	message(STATUS "Version: ${${CMAKE_PROJECT_NAME}_VERSION_SHORT}")
@@ -74,6 +85,15 @@ elseif( EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git )
 		set(${CMAKE_PROJECT_NAME}_VERSION_SHORT 0.0.0)
 	endif()
 	message(STATUS "Git short version: ${${CMAKE_PROJECT_NAME}_VERSION_SHORT}")
+
+	string(REPLACE "." ";" VERSION_LIST ${${CMAKE_PROJECT_NAME}_VERSION_SHORT})
+	list(GET VERSION_LIST 0 ${CMAKE_PROJECT_NAME}_VERSION_MAJOR)
+	list(GET VERSION_LIST 1 ${CMAKE_PROJECT_NAME}_VERSION_MINOR)
+	list(GET VERSION_LIST 2 ${CMAKE_PROJECT_NAME}_VERSION_PATCH)
+
+	message(STATUS "Major version: ${${CMAKE_PROJECT_NAME}_VERSION_MAJOR}")
+	message(STATUS "Minor version: ${${CMAKE_PROJECT_NAME}_VERSION_MINOR}")
+	message(STATUS "Patch version: ${${CMAKE_PROJECT_NAME}_VERSION_PATCH}")
 else()
 	set(${CMAKE_PROJECT_NAME}_VERSION_SHORT 0.0.0)
 	set(${CMAKE_PROJECT_NAME}_VERSION_FULL 0.0.0)
