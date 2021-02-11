@@ -25,7 +25,7 @@ cmake_minimum_required (VERSION 3.8.0)
 # a simple suffixed "-<branchname>".
 
 # -- module version (of this .cmake file)
-set(GIT_TAG_VERSION_MODULE_VERSION 1.0.0)
+set(GIT_TAG_VERSION_MODULE_VERSION 1.1.0)
 
 # -- Versioning with git tag
 message(STATUS "GitTagVersion: Version ${GIT_TAG_VERSION_MODULE_VERSION}")
@@ -48,7 +48,7 @@ elseif( EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git )
 
 	# -- get git full version info including possible dirty flag
 	execute_process(
-			COMMAND git describe --tags --always --dirty
+			COMMAND git describe --tags --always --dirty=* --abbrev=10
 			WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 			OUTPUT_VARIABLE ${CMAKE_PROJECT_NAME}_VERSION_FULL
 			ERROR_QUIET
@@ -65,7 +65,6 @@ elseif( EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git )
 
 	# -- extract pure numerical (including dots) version info
 	execute_process(
-#			COMMAND /bin/bash -c "git describe --tags --abbrev=0 | tr --delete --complement '0-9.'" # Linux only
 			COMMAND git describe --tags --abbrev=0
 			WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 			OUTPUT_VARIABLE ${CMAKE_PROJECT_NAME}_VERSION_SHORT
@@ -74,7 +73,7 @@ elseif( EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git )
 	if(${CMAKE_PROJECT_NAME}_VERSION_SHORT STREQUAL "")
 		set(${CMAKE_PROJECT_NAME}_VERSION_SHORT 0.0.0)
 	endif()
-	message(STATUS "Git version: ${${CMAKE_PROJECT_NAME}_VERSION_SHORT}")
+	message(STATUS "Git short version: ${${CMAKE_PROJECT_NAME}_VERSION_SHORT}")
 else()
 	set(${CMAKE_PROJECT_NAME}_VERSION_SHORT 0.0.0)
 	set(${CMAKE_PROJECT_NAME}_VERSION_FULL 0.0.0)
