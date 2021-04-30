@@ -61,7 +61,7 @@ public:
 	virtual void dispatch(EventConstPtr const ev);
 
 public:
-	Fsm(StateHandler const initial)
+	explicit Fsm(StateHandler const initial)
 			: m_state(nullptr)
 			, m_temp(initial)
 	{}

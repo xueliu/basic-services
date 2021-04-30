@@ -61,6 +61,6 @@ if(BASIC_SERVICES_TESTS)
 endif()
 
 # Examples
-if(BASIC_SERVICES_EXAMPLES)
+#if(BASIC_SERVICES_EXAMPLES)
     add_subdirectory(examples)
-endif()
+#endif()

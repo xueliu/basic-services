@@ -12,7 +12,7 @@
 namespace basic {
 
 class BASIC_SERVICES_EXPORT ActiveObject : public Fsm {
-	
+
 };
 
 } // namespace basic
